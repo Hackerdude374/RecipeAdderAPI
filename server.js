@@ -1,5 +1,7 @@
 const {RecipeApplication} = require('./models');
+const express = require("express");
 const app = express();
+const port = 6000;
 //create new recipe
 app.use(express.json());
 app.post("/recipes", async(req,res)=>{
@@ -7,11 +9,18 @@ try{
     const newRecipe = await RecipeApplication.create(req.body);
     res.status(201).json(newRecipe);
 }catch(err){
-    console.error(err);
-    res.status(500).send({message: err.message});
+    if(err.name == 'SequelizeValidationError'){
+        return res.status(422).json({errors: err.errors.map(e=>e.message)});
+    }
+
+console.error(err);
+res.status(500).send({message: 'unexpected error in post recipe'});
 }
 });
 
+app.get("/", (req,res)=>{
+    res.send("welcome to recipe api");
+});
 //get all recipes 
 app.get("/recipes", async (req,res) =>{
     try{
@@ -22,6 +31,12 @@ res.status(200).json(allRecipes);
         res.status(500).send({message: err.message});
     }
 });
+
+
+
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+  });
 
 //get specigic recipe
 
