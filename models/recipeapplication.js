@@ -9,29 +9,47 @@ module.exports = (sequelize, DataTypes) => {
     title: {
       type: DataTypes.STRING,
       allowNull:false,
+      validate:{
+        minLengthForTitle(value){
+          if(value.length <3){
+            throw new Error("length of title cannot be less than 3 char.");
+          }
+        },
+      },
     },
     description: {
       type: DataTypes.STRING,
       allowNull :false,
+      validate:{
+        maxLengthDescription(value){ //max char of 500
+        if(value.length >500){
+          throw new Error("too much words. 500 char max");
+        }
+      },
+      },
     },
-    ingredients: {type: DataTypes.STRING,
+    ingredients: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    instructions:{ type: DataTypes.STRING,
+    instructions:{ 
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdAt: {
       type: DataTypes.DATE,
       allowNull : false,
     },
-    updatedAt:{ type: DataTypes.DATE,
+    updatedAt:{ 
+      type: DataTypes.DATE,
       allowNull: false,
     },
   }, {
     sequelize,
     modelName: 'RecipeApplication',
     tableName: 'recipe_applications',
-    underscored: true
+    underscored: true,
+    timestamps:false,
   });
   return RecipeApplication;
 };
