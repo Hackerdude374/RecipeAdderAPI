@@ -31,10 +31,24 @@ module.exports = (sequelize, DataTypes) => {
     ingredients: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate:{
+        maxLengthIngredients(value){
+          if(value.length >1000){
+            throw new Error("too much chars. 1000 char max");
+          }
+        },
+      },
     },
     instructions:{ 
       type: DataTypes.STRING,
       allowNull: false,
+      validate:{
+      maxLengthInstructions(value){
+        if(value.length > 5000){
+            throw new Error("too much chars. 5000 char max");
+        }
+      },
+    },
     },
     createdAt: {
       type: DataTypes.DATE,
