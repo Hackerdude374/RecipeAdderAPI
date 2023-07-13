@@ -1,7 +1,7 @@
 const {RecipeApplication} = require('./models');
-
+const app = express();
 //create new recipe
-
+app.use(express.json());
 app.post("/recipes", async(req,res)=>{
 try{
     const newRecipe = await RecipeApplication.create(req.body);
@@ -78,4 +78,3 @@ app.patch("/recipes/:id", async (req, res) => {
     }
   });
 
-  
